@@ -1,12 +1,11 @@
 import * as React from 'react';
-// import { mount } from 'enzyme';
 import {
   KeyboardManager,
   RegisterKeyDownTest,
   KeyboardInjectDocument,
 } from './keyboard';
 import { render, RenderResult } from 'react-testing-library';
-import { FocusManager, FocusContainer, FocusElement } from './focus';
+import { FocusManager, FocusContainer, FocusElement } from '../focus';
 
 export function simulateKeyDown(
   domEl: RenderResult,
