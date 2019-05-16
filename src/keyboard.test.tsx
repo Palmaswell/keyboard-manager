@@ -1,30 +1,7 @@
 import * as React from 'react';
-import {
-  KeyboardManager,
-  RegisterKeyDownTest,
-} from './keyboard';
-import { render, RenderResult } from 'react-testing-library';
-import { FocusManager, FocusContainer, FocusElement } from '../focus';
-
-export function simulateKeyDown(
-  domEl: RenderResult,
-  keyId = 'section',
-  key = 'ArrowDown'
-) {
-  const elem = domEl.queryByTestId(keyId)!;
-  const keyList = key.split('^')
-  key = keyList[keyList.length - 1];
-  let shiftKey = !!keyList.map(i => i.toLocaleLowerCase()).find(i => i === 'shift');
-
-  elem.dispatchEvent(
-    new KeyboardEvent('keydown', {
-      key,
-      shiftKey,
-      code: '40',
-      bubbles: true,
-    })
-  );
-}
+import { KeyboardManager, RegisterKeyDownTest } from './keyboard';
+import { render } from 'react-testing-library';
+import { simulateKeyDown } from './simulate-key-down';
 
 describe('KeyboardManager', () => {
   test('Registers DOM events', () => {
@@ -80,24 +57,14 @@ describe('KeyboardManager', () => {
             fn(ev);
             return ev.key === 'Tab';
           }}>
-          <FocusManager reset={true}>
-            <FocusContainer>
-              <input type="button" data-testid="input1" value="input one" />
-              <FocusContainer>
-                <RegisterKeyDownTest
-                  testFn={(ev: KeyboardEvent) => {
-                    fn(ev);
-                    return ev.key === 'ArrowDown';
-                  }}>
-                  <FocusElement>
-                    {_ => (
-                      <input type="button" value="foo" data-testid="input2" />
-                    )}
-                  </FocusElement>
-                </RegisterKeyDownTest>
-              </FocusContainer>
-            </FocusContainer>
-          </FocusManager>
+          <input type="button" data-testid="input1" value="input one" />
+          <RegisterKeyDownTest
+            testFn={(ev: KeyboardEvent) => {
+              fn(ev);
+              return ev.key === 'ArrowDown';
+            }}>
+            <input type="button" value="foo" data-testid="input2" />
+          </RegisterKeyDownTest>
         </RegisterKeyDownTest>
       </KeyboardManager>
     );
