@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   KeyboardManager,
   RegisterKeyDownTest,
-  KeyboardInjectDocument,
 } from './keyboard';
 import { render, RenderResult } from 'react-testing-library';
 import { FocusManager, FocusContainer, FocusElement } from '../focus';
@@ -12,11 +11,16 @@ export function simulateKeyDown(
   keyId = 'section',
   key = 'ArrowDown'
 ) {
-  domEl.queryByTestId(keyId)!.dispatchEvent(
-    new (window as any).KeyboardEvent('keydown', {
+  const elem = domEl.queryByTestId(keyId)!;
+  const keyList = key.split('^')
+  key = keyList[keyList.length - 1];
+  let shiftKey = !!keyList.map(i => i.toLocaleLowerCase()).find(i => i === 'shift');
+
+  elem.dispatchEvent(
+    new KeyboardEvent('keydown', {
       key,
-      code: 40,
-      keyCode: 40,
+      shiftKey,
+      code: '40',
       bubbles: true,
     })
   );
@@ -27,7 +31,6 @@ describe('KeyboardManager', () => {
     const fn = jest.fn();
     const dom = render(
       <KeyboardManager>
-        <KeyboardInjectDocument document={document} />
         <RegisterKeyDownTest
           testFn={(ev: KeyboardEvent) => {
             fn(ev);
@@ -72,7 +75,6 @@ describe('KeyboardManager', () => {
     const fn = jest.fn();
     const dom = render(
       <KeyboardManager>
-        <KeyboardInjectDocument document={document} />
         <RegisterKeyDownTest
           testFn={(ev: KeyboardEvent) => {
             fn(ev);

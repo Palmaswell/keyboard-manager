@@ -9,11 +9,16 @@ export class KeyboardManagerContext {
   private testKeyDowns: TestKeyDown[] = [];
   private document?: Document;
 
-  public injectDocument(document: Document) {
-    if (this.document !== document) {
-      document.body.addEventListener('keydown', (ev: KeyboardEvent) => {
-        this.testKeyDowns.forEach(t => t(ev));
-      });
+  public keyDown = (ev: KeyboardEvent) => {
+    this.testKeyDowns.forEach(t => t(ev));
+  }
+
+  public injectDocument(document?: Document) {
+     if (document && this.document !== document) {
+      if (this.document) {
+        this.document.body.removeEventListener("keydown", this.keyDown);
+      }
+      document.body.addEventListener('keydown', this.keyDown);
       this.document = document;
     }
   }
@@ -39,17 +44,6 @@ export const KeyboardManagerConsumer = KeyboardManagerCtx.Consumer;
 export type KeyboardInjectDocumentProps = React.PropsWithChildren<{
   readonly document: Document;
 }>;
-
-export function KeyboardInjectDocument(props: KeyboardInjectDocumentProps) {
-  return (
-    <KeyboardManagerCtx.Consumer>
-      {ctx => {
-        ctx.injectDocument(props.document);
-        return props.children;
-      }}
-    </KeyboardManagerCtx.Consumer>
-  );
-}
 
 export type KeyboardManagerProps = React.PropsWithChildren<{
   readonly document?: Document;
@@ -88,6 +82,7 @@ export function RegisterKeyDownTest(props: RegisterKeyDownTestProps) {
 }
 
 export function KeyboardManager(props: KeyboardManagerProps) {
+  keyboardManagerContext.injectDocument(props.document || document);
   return (
     <KeyboardManagerCtx.Provider value={keyboardManagerContext}>
       {props.children}
