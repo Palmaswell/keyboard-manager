@@ -25,22 +25,6 @@ describe('KeyboardManager', () => {
       </KeyboardManager>
     );
     simulateKeyDown(dom, 'input', 'A');
-    // const input = dom.queryByTestId('input');
-    // const input = dom.find('input').first();
-    // input.simulate('keypress', {
-    //   key: 'A',
-    //   code: '65',
-    //   keyCode: 65,
-    //   bubbles: true,
-    // });
-    // input!.dispatchEvent(
-    //   new (window as any).KeyboardEvent('keydown', {
-    //     key: 'A',
-    //     code: '65',
-    //     keyCode: 65,
-    //     bubbles: true,
-    //   } as any)
-    // );
     expect(fn.mock.calls.length).toBe(2);
     expect(fn.mock.calls.map((k: KeyboardEvent[]) => k[0].key)).toEqual([
       'A',
