@@ -3,6 +3,8 @@
 
 > The main idea behind the `<KeyboardManager />` is to allow developers to easily implement meaningful keyboard navigation flows in React applications.
 
+[![CircleCI](https://circleci.com/gh/Palmaswell/keyboard-manager/tree/master.svg?style=svg)](https://circleci.com/gh/Palmaswell/keyboard-manager/tree/master)
+
 ## Requirements
 
 🚀 Node.js >= 10
