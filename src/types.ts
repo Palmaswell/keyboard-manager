@@ -1,4 +1,4 @@
-export interface TestKeyDown {
+export interface KeydownEv {
   (ev: KeyboardEvent): boolean;
 }
 
@@ -7,6 +7,6 @@ export type KeyboardManagerProps = React.PropsWithChildren<{
 }>;
 
 export type RegisterKeyDownTestProps = React.PropsWithChildren<{
-  readonly testFn: TestKeyDown;
+  readonly testFn: KeydownEv;
 }>;
 

@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { KeyboardManager, RegisterKeyDownTest } from './keyboard';
 import { render } from 'react-testing-library';
-import { simulateKeyDown } from './simulate-key-down';
+
+import { KeyboardManager } from '../keyboard';
+import { RegisterKeyDownTest } from '../internal-keyboard-consumer';
+import { simulateKeyDown } from '../simulate-key-down';
 
 describe('KeyboardManager', () => {
   test('Registers DOM events', () => {
@@ -32,7 +34,7 @@ describe('KeyboardManager', () => {
     ]);
     dom.unmount();
   });
-  test('Registers keybord event from nested FocusManager', () => {
+  test('Registers keyboard events from nested KeyboardManager.Consumer', () => {
     const fn = jest.fn();
     const dom = render(
       <KeyboardManager>
